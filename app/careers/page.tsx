@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { PageShell } from "@/components/page-shell"
-import { phpApiBaseUrl } from "@/lib/api-client"
+import { getPhpApiBaseUrl } from "@/lib/api-client"
 
 export const metadata: Metadata = {
   title: "Careers | VIBOS",
@@ -30,7 +30,7 @@ const openingsFallback = [
 ]
 
 export default async function CareersPage() {
-  const base = phpApiBaseUrl
+  const base = getPhpApiBaseUrl()
   const openings = base
     ? (((await (await fetch(`${base}/api/careers`, { cache: "no-store" })).json()).data ?? []) as Array<{
         title: string

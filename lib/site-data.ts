@@ -98,6 +98,7 @@ export const services: ServiceItem[] = [
 
 export const mainNavLinks = [
   { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
   { label: "Services", href: "/services" },
   { label: "Team", href: "/team" },
   { label: "Careers", href: "/careers" },

@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { PageShell } from "@/components/page-shell"
-import { phpApiBaseUrl } from "@/lib/api-client"
+import { getPhpApiBaseUrl } from "@/lib/api-client"
 import { services as localServices } from "@/lib/site-data"
 
 export const metadata: Metadata = {
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 }
 
 export default async function ServicesPage() {
-  const base = phpApiBaseUrl
+  const base = getPhpApiBaseUrl()
   const services = base
     ? (((await (await fetch(`${base}/api/services`, { cache: "no-store" })).json()).data ?? []) as Array<{
         slug: string

@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { PageShell } from "@/components/page-shell"
 import { blogPosts } from "@/lib/blog-posts"
-import { phpApiBaseUrl } from "@/lib/api-client"
+import { getPhpApiBaseUrl } from "@/lib/api-client"
 
 type Props = {
   params: Promise<{ slug: string }>
@@ -10,13 +10,14 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
-  if (!phpApiBaseUrl) {
+  if (!getPhpApiBaseUrl()) {
     const post = blogPosts.find((item) => item.slug === slug)
     if (!post) return { title: "Article Not Found | VIBOS" }
     return { title: `${post.title} | VIBOS`, description: post.excerpt }
   }
 
-  const res = await fetch(`${phpApiBaseUrl}/api/blog/${encodeURIComponent(slug)}`, { cache: "no-store" })
+  const base = getPhpApiBaseUrl()
+  const res = await fetch(`${base}/api/blog/${encodeURIComponent(slug)}`, { cache: "no-store" })
   if (!res.ok) return { title: "Article Not Found | VIBOS" }
   const json = (await res.json()) as any
   const post = json?.data
@@ -30,7 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BlogArticlePage({ params }: Props) {
   const { slug } = await params
-  if (!phpApiBaseUrl) {
+  if (!getPhpApiBaseUrl()) {
     const post = blogPosts.find((item) => item.slug === slug)
     if (!post) notFound()
     return (
@@ -53,7 +54,8 @@ export default async function BlogArticlePage({ params }: Props) {
     )
   }
 
-  const res = await fetch(`${phpApiBaseUrl}/api/blog/${encodeURIComponent(slug)}`, { cache: "no-store" })
+  const base = getPhpApiBaseUrl()
+  const res = await fetch(`${base}/api/blog/${encodeURIComponent(slug)}`, { cache: "no-store" })
   if (!res.ok) notFound()
   const json = (await res.json()) as any
   const post = json?.data

@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { phpApiBaseUrl } from "@/lib/api-client"
+import { getPhpApiBaseUrl } from "@/lib/api-client"
 import { AdminCard } from "@/components/admin/admin-ui"
 import { ArrowRight, Lock, Shield } from "lucide-react"
 
@@ -20,7 +20,7 @@ export default function AdminLoginPage() {
     setError(null)
 
     try {
-      const res = await fetch(`${phpApiBaseUrl}/api/admin/auth/login`, {
+      const res = await fetch(`${getPhpApiBaseUrl()}/api/admin/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

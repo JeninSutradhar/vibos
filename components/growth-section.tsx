@@ -148,11 +148,11 @@ function GrowthSection() {
             <div className="text-sm text-gray-600 host-grotesk-regular">Operational Availability</div>
           </div>
           <div>
-            <div className="text-3xl font-bold text-[#1D1D1F] mb-2 host-grotesk-bold">150+</div>
+            <div className="text-3xl font-bold text-[#1D1D1F] mb-2 host-grotesk-bold">50+</div>
             <div className="text-sm text-gray-600 host-grotesk-regular">Global Client Delivery</div>
           </div>
           <div>
-            <div className="text-3xl font-bold text-[#1D1D1F] mb-2 host-grotesk-bold">2M+</div>
+            <div className="text-3xl font-bold text-[#1D1D1F] mb-2 host-grotesk-bold">1500+</div>
             <div className="text-sm text-gray-600 host-grotesk-regular">Daily Task Volume</div>
           </div>
         </div>

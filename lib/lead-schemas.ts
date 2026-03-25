@@ -25,7 +25,9 @@ export const quoteLeadSchema = baseLeadSchema.extend({
 export const callbackLeadSchema = z.object({
   name: z.string().min(2, "Name is required"),
   email: z.string().email("Valid email is required"),
-  company: z.string().optional(),
+  company: z.string().min(2, "Company is required"),
+  country: z.string().min(2, "Country is required"),
+  serviceInterest: z.string().min(2, "Service interest is required"),
   preferredTime: z.string().min(2, "Preferred time is required"),
   sourcePage: z.string().min(1, "Source page is required"),
   message: z.string().optional(),

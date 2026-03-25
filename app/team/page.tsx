@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { PageShell } from "@/components/page-shell"
-import { phpApiBaseUrl } from "@/lib/api-client"
+import { getPhpApiBaseUrl } from "@/lib/api-client"
 
 export const metadata: Metadata = {
   title: "Our Team | VIBOS",
@@ -27,7 +27,7 @@ const teamHighlightsFallback = [
 ]
 
 export default async function TeamPage() {
-  const base = phpApiBaseUrl
+  const base = getPhpApiBaseUrl()
   const profiles = base
     ? (((await (await fetch(`${base}/api/team`, { cache: "no-store" })).json()).data ?? []) as Array<{
         title: string

@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { PageShell } from "@/components/page-shell"
-import { phpApiBaseUrl } from "@/lib/api-client"
+import { getPhpApiBaseUrl } from "@/lib/api-client"
 import { blogPosts } from "@/lib/blog-posts"
 
 export const metadata: Metadata = {
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 }
 
 export default async function BlogPage() {
-  const base = phpApiBaseUrl
+  const base = getPhpApiBaseUrl()
   const posts = base
     ? (((await (await fetch(`${base}/api/blog`, { cache: "no-store" })).json()).data ?? []) as Array<{
         slug: string

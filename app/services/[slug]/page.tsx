@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { PageShell } from "@/components/page-shell"
 import { ServicePageTemplate } from "@/components/service-page-template"
-import { phpApiBaseUrl } from "@/lib/api-client"
+import { getPhpApiBaseUrl } from "@/lib/api-client"
 
 type Props = {
   params: Promise<{ slug: string }>
@@ -10,7 +10,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
-  const base = phpApiBaseUrl
+  const base = getPhpApiBaseUrl()
   const serviceRes = base
     ? await fetch(`${base}/api/services/${encodeURIComponent(slug)}`, { cache: "no-store" })
     : null
@@ -31,7 +31,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ServiceDetailPage({ params }: Props) {
   const { slug } = await params
-  const base = phpApiBaseUrl
+  const base = getPhpApiBaseUrl()
+  if (!base) notFound()
   const res = await fetch(`${base}/api/services/${encodeURIComponent(slug)}`, { cache: "no-store" })
   if (!res.ok) notFound()
 
