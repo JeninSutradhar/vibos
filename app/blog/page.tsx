@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { PageShell } from "@/components/page-shell"
 import { getPhpApiBaseUrl } from "@/lib/api-client"
+import { truncateForBlogCard } from "@/lib/blog-excerpt"
 import { blogPosts } from "@/lib/blog-posts"
 
 export const metadata: Metadata = {
@@ -42,7 +43,7 @@ export default async function BlogPage() {
                     {post.category} · {post.date}
                   </p>
                   <h2 className="mt-3 text-2xl font-bold text-[#1D1D1F]">{post.title}</h2>
-                  <p className="mt-3 text-gray-700">{post.excerpt}</p>
+                  <p className="mt-3 line-clamp-4 text-gray-700">{truncateForBlogCard(post.excerpt)}</p>
                   <Link href={`/blog/${post.slug}`} className="mt-5 inline-block font-semibold underline">
                     Read article
                   </Link>

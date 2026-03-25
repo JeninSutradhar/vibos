@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
 import { adminFetch } from "@/lib/admin-client"
@@ -28,6 +28,12 @@ export default function AdminEditBlogPostPage() {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [form, setForm] = useState<BlogAdmin | null>(null)
+  const [bodyDraft, setBodyDraft] = useState("")
+  const bodyInitialized = useRef(false)
+
+  useEffect(() => {
+    bodyInitialized.current = false
+  }, [slug])
 
   useEffect(() => {
     async function run() {
@@ -44,6 +50,22 @@ export default function AdminEditBlogPostPage() {
     }
     if (slug) void run()
   }, [slug])
+
+  useEffect(() => {
+    if (loading || !form || bodyInitialized.current) return
+    if (typeof form.content === "string") {
+      setBodyDraft(form.content)
+    } else if (form.content != null) {
+      try {
+        setBodyDraft(JSON.stringify(form.content, null, 2))
+      } catch {
+        setBodyDraft("")
+      }
+    } else {
+      setBodyDraft("")
+    }
+    bodyInitialized.current = true
+  }, [form, loading])
 
   if (loading)
     return (
@@ -145,6 +167,36 @@ export default function AdminEditBlogPostPage() {
           <label className="mt-5 block">
             <span className="text-xs font-semibold uppercase tracking-wide text-[#1D1D1F]/45">Excerpt</span>
             <textarea value={form.excerpt} onChange={(e) => update({ excerpt: e.target.value })} rows={4} className={input} />
+          </label>
+
+          <label className="mt-5 block">
+            <span className="text-xs font-semibold uppercase tracking-wide text-[#1D1D1F]/45">Article body</span>
+            <p className="mt-1 text-xs text-[#1D1D1F]/50">
+              Use <strong>Markdown</strong>: headings with <code className="rounded bg-black/5 px-1">##</code>, numbered lists
+              with <code className="rounded bg-black/5 px-1">1.</code>, bullets with <code className="rounded bg-black/5 px-1">-</code>.
+              Blank lines between paragraphs. Or paste valid <strong>JSON</strong> (TipTap / ProseMirror{" "}
+              <code className="rounded bg-black/5 px-1">doc</code> format).
+            </p>
+            <textarea
+              value={bodyDraft}
+              onChange={(e) => {
+                const v = e.target.value
+                setBodyDraft(v)
+                const t = v.trim()
+                if (t === "") {
+                  update({ content: null })
+                  return
+                }
+                try {
+                  update({ content: JSON.parse(v) as BlogAdmin["content"] })
+                } catch {
+                  update({ content: v })
+                }
+              }}
+              rows={18}
+              spellCheck={false}
+              className={`${input} font-mono text-xs leading-relaxed`}
+            />
           </label>
 
           <div className="mt-5 grid gap-4 md:grid-cols-2">

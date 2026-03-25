@@ -1,10 +1,11 @@
 import type { MetadataRoute } from "next"
-import { services } from "@/lib/site-data"
 import { blogPosts } from "@/lib/blog-posts"
-
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://example.com"
+import { getSiteUrl } from "@/lib/site-url"
+import { services } from "@/lib/site-data"
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  const baseUrl = getSiteUrl()
+
   const staticPages = [
     "",
     "/about",
